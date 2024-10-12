@@ -1,0 +1,13 @@
+version: '3'
+services:
+  dbService:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: telegramProject
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345User
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
