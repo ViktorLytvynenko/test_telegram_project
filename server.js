@@ -11,8 +11,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Use express.urlencoded instead of bodyParser
 dotenv.config();
+
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    },
 });
 
 app.get('/', (req, res) => {

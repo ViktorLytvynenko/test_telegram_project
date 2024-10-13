@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 export const config =  {
     db_port: process.env.DB_PORT,
