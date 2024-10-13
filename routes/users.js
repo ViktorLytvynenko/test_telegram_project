@@ -64,7 +64,7 @@ router.get('/user/:id', async (req, res) => {
     const userId = req.params.id;
 
     try {
-        const query = 'SELECT * FROM users WHERE id = $1';
+        const query = 'SELECT * FROM users WHERE telegram_id = $1';
         const result = await pool.query(query, [userId]);
 
         if (result.rows.length === 0) {
