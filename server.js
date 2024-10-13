@@ -42,11 +42,11 @@ app.post('/api/data', async (req, res) => {
             VALUES ($1, $2, $3, $4, $5)
         `;
         const values = [
-            userData.telegram_id,
-            userData.user.first_name,
-            userData.user.username,
+            userData.id,
+            userData.first_name,
+            userData.username,
             authDate,
-            userData.user.hash,
+            userData.hash,
         ];
 
         const result = await pool.query(query, values);
