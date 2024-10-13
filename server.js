@@ -25,7 +25,7 @@ app.post('/api/data', async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO users (telegram_id, first_name, username, auth_date, hash, phone_number)
+            INSERT INTO users (telegram_id, first_name, username, auth_date, hash)
             VALUES ($1, $2, $3, $4, $5, $6)
         `;
         const values = [
@@ -35,7 +35,6 @@ app.post('/api/data', async (req, res) => {
             userData.user.username,
             userData.user.auth_date,
             userData.user.hash,
-            userData.phone_number
         ];
 
         await pool.query(query, values);
