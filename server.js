@@ -15,7 +15,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Use express.urlencoded instead of bodyParser
+app.use(express.urlencoded({ extended: true }));
 dotenv.config();
 
 const pool = new Pool({
@@ -26,8 +26,13 @@ const pool = new Pool({
 });
 
 app.post('/api/data', async (req, res) => {
-    console.log(req.body);
+    console.log("Received POST request:", req.body);
     const userData = req.body;
+
+    if (!userData || !userData.telegram_id || !userData.user) {
+        return res.status(400).json({ message: 'Invalid data provided' });
+    }
+
     const authDateUnix = userData.auth_date;
     const authDate = new Date(authDateUnix * 1000).toISOString();
 
@@ -37,17 +42,18 @@ app.post('/api/data', async (req, res) => {
             VALUES ($1, $2, $3, $4, $5)
         `;
         const values = [
-            userData.id,
+            userData.telegram_id,
             userData.user.first_name,
             userData.user.username,
             authDate,
             userData.user.hash,
         ];
 
-        await pool.query(query, values);
+        const result = await pool.query(query, values);
+        console.log("Insert result:", result);
         res.status(201).json({ message: 'Data successfully saved' });
     } catch (err) {
-        console.error(err);
+        console.error("Database insert error:", err);
         res.status(500).json({ message: 'Error saving data' });
     }
 });
