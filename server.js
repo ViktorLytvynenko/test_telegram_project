@@ -31,7 +31,7 @@ app.post('/api/data', async (req, res) => {
             VALUES ($1, $2, $3, $4, $5)
         `;
         const values = [
-            userData.telegram_id,
+            userData.id,
             userData.user.first_name,
             userData.user.username,
             authDate,
