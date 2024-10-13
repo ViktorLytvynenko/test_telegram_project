@@ -29,16 +29,16 @@ app.post('/api/data', async (req, res) => {
     console.log("Received POST request:", req.body);
     const userData = req.body;
 
-    if (userData){
-        return res.status(200).send({userData})
-    }
-
     if (!userData) {
         return res.status(400).json({ message: 'Invalid data provided' });
     }
 
     const authDateUnix = userData.auth_date;
     const authDate = new Date(authDateUnix * 1000).toISOString();
+    if (userData){
+        return res.status(200).json({ id: userData.id, first_name: userData.first_name, username: userData.username,
+            authDate, hash: userData.hash});
+    }
 
     try {
         const query = `
