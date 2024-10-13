@@ -19,12 +19,8 @@ const pool = new Pool({
     },
 });
 
-app.get('/', (req, res) => {
-    console.log("TEST");
-    res.send("TEST");
-});
-
 app.post('/api/data', async (req, res) => {
+    console.log(req.body);
     const userData = req.body;
 
     try {
