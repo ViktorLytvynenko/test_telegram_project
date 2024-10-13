@@ -1,6 +1,6 @@
-import Router from "express";
+import {Router} from "express";
 
-const router = new Router()
+const router = Router();
 
 router.post('/data', async (req, res) => {
     console.log("Received POST request:", req.body);
