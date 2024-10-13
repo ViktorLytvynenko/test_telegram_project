@@ -3,48 +3,14 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import cors from 'cors';
 import { config } from './config.js';
-import * as bodyParser from "express";
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // Use express.urlencoded instead of bodyParser
 
-
-app.use('/auth', auth);
-
-app.get('/', (req, res) => {
-    console.log("TEST")
-})
-
-app.post('/api/data', async (req, res) => {
-    const userData = req.body;
-
-    try {
-        const query = `
-      INSERT INTO users (id, first_name, username, auth_date, hash)
-      VALUES ($1, $2, $3, $4, $5)
-    `;
-        const values = [
-            userData.user.id,
-            userData.user.first_name,
-            userData.user.username,
-            userData.user.auth_date,
-            userData.user.hash,
-        ];
-
-        await pool.query(query, values);
-        res.status(201).json({ message: 'Данные успешно сохранены' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Ошибка при сохранении данных' });
-    }
-});
-
-
-const PORT = process.env.PORT || 9000
-
+// Database connection pool
 const pool = new Pool({
     user: config.user,
     password: config.password,
@@ -53,16 +19,49 @@ const pool = new Pool({
     port: config.port
 });
 
+app.get('/', (req, res) => {
+    console.log("TEST");
+    res.send("TEST");
+});
+
+app.post('/api/data', async (req, res) => {
+    const userData = req.body;
+
+    try {
+        const query = `
+            INSERT INTO users (telegram_id, first_name, username, auth_date, hash, phone_number)
+            VALUES ($1, $2, $3, $4, $5, $6)
+        `;
+        const values = [
+            userData.user.id,
+            userData.telegram_id,
+            userData.user.first_name,
+            userData.user.username,
+            userData.user.auth_date,
+            userData.user.hash,
+            userData.phone_number
+        ];
+
+        await pool.query(query, values);
+        res.status(201).json({ message: 'Data successfully saved' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error saving data' });
+    }
+});
+
+const PORT = process.env.PORT || 9000;
+
 const application = async () => {
     try {
         await pool.connect();
-        console.log("DB connected")
+        console.log("DB connected");
         app.listen(PORT, () => {
-            console.log(`Server was started on PORT ${PORT}`);
-        })
+            console.log(`Server started on PORT ${PORT}`);
+        });
     } catch (e) {
-        console.log(e)
+        console.error("DB connection error:", e);
     }
-}
+};
 
-application()
+application();
