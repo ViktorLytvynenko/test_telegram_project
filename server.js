@@ -1,27 +1,28 @@
 import express from 'express';
-import pkg from 'pg';
-const { Pool } = pkg;
+import { Pool } from 'pg';
 import cors from 'cors';
-import { config } from './config.js';
 import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Use express.urlencoded instead of bodyParser
-dotenv.config();
+app.use(express.urlencoded({ extended: true }));
 
 const pool = new Pool({
     connectionString: process.env.URI,
     ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false // Убедитесь, что это безопасно для вашей среды
     },
 });
 
 app.post('/api/data', async (req, res) => {
     console.log(req.body);
+
     const userData = req.body;
+
     const authDateUnix = userData.auth_date;
     const authDate = new Date(authDateUnix * 1000).toISOString();
 
@@ -38,11 +39,16 @@ app.post('/api/data', async (req, res) => {
             userData.user.hash,
         ];
 
-        await pool.query(query, values);
-        res.status(201).json({ message: 'Data successfully saved' });
+        const result = await pool.query(query, values);
+
+        if (result.rowCount > 0) {
+            return res.status(201).json({ message: 'Data successfully saved' });
+        } else {
+            return res.status(400).json({ message: 'No data was saved' });
+        }
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error saving data' });
+        console.error("Error saving data:", err);
+        return res.status(500).json({ message: 'Error saving data' });
     }
 });
 
