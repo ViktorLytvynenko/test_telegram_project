@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true })); // Use express.urlencoded inste
 dotenv.config();
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.URI,
     ssl: {
         rejectUnauthorized: false
     },
