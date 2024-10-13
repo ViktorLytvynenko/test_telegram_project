@@ -58,15 +58,29 @@ app.post('/api/data', async (req, res) => {
 });
 
 app.get('/api/admin', async (req, res) => {
-    try {
-        const query = 'SELECT * FROM users';
-        const result = await pool.query(query);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
 
-        res.status(200).json(result.rows);
+    try {
+        const totalCountQuery = 'SELECT COUNT(*) AS count FROM users';
+        const totalCountResult = await pool.query(totalCountQuery);
+        const totalCount = totalCountResult.rows[0].count;
+
+        const query = 'SELECT * FROM users LIMIT $1 OFFSET $2';
+        const result = await pool.query(query, [limit, offset]);
+
+        res.status(200).json({
+            totalCount,
+            totalPages: Math.ceil(totalCount / limit),
+            currentPage: page,
+            users: result.rows
+        });
     } catch (err) {
         res.status(500).json({ message: 'Internal server error', error: err.message });
     }
 });
+
 
 const PORT = process.env.PORT || 9000;
 
