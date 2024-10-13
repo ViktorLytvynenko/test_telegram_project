@@ -10,9 +10,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Use express.urlencoded instead of bodyParser
 
-// const pool = new Pool({
-//     connectionString: process.env.DATABASE_URL
-// });
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL
+});
 
 app.get('/', (req, res) => {
     console.log("TEST");
