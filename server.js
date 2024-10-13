@@ -1,7 +1,7 @@
 import express from 'express';
+import { pool } from './config.js'
 import cors from 'cors';
 import dotenv from "dotenv";
-import { pool } from './config.js'
 import users from "./routes/users.js";
 
 const app = express();
