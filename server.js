@@ -57,6 +57,17 @@ app.post('/api/data', async (req, res) => {
     }
 });
 
+app.get('/api/admin', async (req, res) => {
+    try {
+        const query = 'SELECT * FROM users';
+        const result = await pool.query(query);
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
+});
+
 const PORT = process.env.PORT || 9000;
 
 const application = async () => {
