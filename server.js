@@ -16,7 +16,7 @@ const pool = new Pool({
     password: config.password,
     database: config.db,
     host: config.host,
-    port: config.port
+    db_port: config.db_port
 });
 
 app.get('/', (req, res) => {
