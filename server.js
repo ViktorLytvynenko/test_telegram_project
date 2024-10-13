@@ -35,10 +35,10 @@ app.post('/api/data', async (req, res) => {
 
     const authDateUnix = userData.auth_date;
     const authDate = new Date(authDateUnix * 1000).toISOString();
-    if (userData){
-        return res.status(200).json({ id: userData.id, first_name: userData.first_name, username: userData.username,
-            authDate, hash: userData.hash});
-    }
+    // if (userData){
+    //     return res.status(200).json({ id: userData.id, first_name: userData.first_name, username: userData.username,
+    //         authDate, hash: userData.hash});
+    // }
 
     try {
         const query = `
