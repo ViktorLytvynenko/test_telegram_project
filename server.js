@@ -3,13 +3,14 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import cors from 'cors';
 import { config } from './config.js';
+import dotenv from "dotenv";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Use express.urlencoded instead of bodyParser
-
+dotenv.config();
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
