@@ -2,7 +2,6 @@ import express from 'express';
 import pkg from 'pg';
 const { Pool } = pkg;
 import cors from 'cors';
-import { config } from './config.js';
 import dotenv from "dotenv";
 
 const app = express();
@@ -35,10 +34,6 @@ app.post('/api/data', async (req, res) => {
 
     const authDateUnix = userData.auth_date;
     const authDate = new Date(authDateUnix * 1000).toISOString();
-    // if (userData){
-    //     return res.status(200).json({ id: userData.id, first_name: userData.first_name, username: userData.username,
-    //         authDate, hash: userData.hash});
-    // }
 
     try {
         const query = `
