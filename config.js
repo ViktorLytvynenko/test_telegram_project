@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { Pool } = pkg; // Получаем Pool из pkg
+const { Pool } = pkg;
 
 const pool = new Pool({
     connectionString: process.env.URI,
