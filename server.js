@@ -1,10 +1,7 @@
 import express from 'express';
-import pkg from 'pg';
 import cors from 'cors';
 import dotenv from "dotenv";
 import users from "./routes/users.js";
-
-const {Pool} = pkg;
 
 const app = express();
 
@@ -18,13 +15,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 dotenv.config();
-
-const pool = new Pool({
-    connectionString: process.env.URI,
-    ssl: {
-        rejectUnauthorized: false
-    },
-});
 
 app.use("/api", users)
 
