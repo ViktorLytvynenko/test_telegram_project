@@ -29,7 +29,7 @@ app.post('/api/data', async (req, res) => {
     console.log("Received POST request:", req.body);
     const userData = req.body;
 
-    if (!userData || !userData.telegram_id || !userData.user) {
+    if (!userData) {
         return res.status(400).json({ message: 'Invalid data provided' });
     }
 
