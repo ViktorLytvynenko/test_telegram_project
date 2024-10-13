@@ -39,7 +39,7 @@ app.post('/api/data', async (req, res) => {
 });
 
 
-const PORT = 9000;
+const PORT = process.env.PORT || 9000
 
 const pool = new Pool({
     user: config.user,
