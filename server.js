@@ -22,6 +22,8 @@ const pool = new Pool({
 app.post('/api/data', async (req, res) => {
     console.log(req.body);
     const userData = req.body;
+    const authDateUnix = userData.auth_date;
+    const authDate = new Date(authDateUnix * 1000).toISOString();
 
     try {
         const query = `
@@ -32,7 +34,7 @@ app.post('/api/data', async (req, res) => {
             userData.telegram_id,
             userData.user.first_name,
             userData.user.username,
-            userData.user.auth_date,
+            authDate,
             userData.user.hash,
         ];
 
