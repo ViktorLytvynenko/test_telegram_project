@@ -26,7 +26,7 @@ app.post('/api/data', async (req, res) => {
     try {
         const query = `
             INSERT INTO users (telegram_id, first_name, username, auth_date, hash)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            VALUES ($1, $2, $3, $4, $5)
         `;
         const values = [
             userData.user.id,
