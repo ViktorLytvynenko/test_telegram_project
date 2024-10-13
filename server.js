@@ -81,6 +81,23 @@ app.get('/api/admin', async (req, res) => {
     }
 });
 
+app.get('/api/user/:id', async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const query = 'SELECT * FROM users WHERE id = $1';
+        const result = await pool.query(query, [userId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
+});
+
 
 const PORT = process.env.PORT || 9000;
 
