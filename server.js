@@ -26,16 +26,16 @@ const pool = new Pool({
 });
 
 app.post('/api/data', async (req, res) => {
-    // Тестовые данные
-    const userData = {
-        id: 370942103,
-        first_name: "Viktor",
-        username: "viktor_persona",
-        auth_date: 1728855058,
-        hash: "7b40f2680bcb5d71aaa09fd4d79b53b815f04fbbdca2638b4ae99d27f0cd5beb"
-    };
+    console.log("Received POST request:", req.body);
+    const userData = req.body;
 
-    console.log("Полученные тестовые данные:", userData);
+    if (userData){
+        return res.status(200).send({userData})
+    }
+
+    if (!userData) {
+        return res.status(400).json({ message: 'Invalid data provided' });
+    }
 
     const authDateUnix = userData.auth_date;
     const authDate = new Date(authDateUnix * 1000).toISOString();
@@ -54,11 +54,11 @@ app.post('/api/data', async (req, res) => {
         ];
 
         const result = await pool.query(query, values);
-        console.log("Результат вставки:", result);
-        res.status(201).json({ message: 'Данные успешно сохранены' });
+        console.log("Insert result:", result);
+        res.status(201).json({ message: 'Data successfully saved' });
     } catch (err) {
-        console.error("Ошибка вставки в базу данных:", err);
-        res.status(500).json({ message: 'Ошибка сохранения данных', error: err.message });
+        console.error("Database insert error:", err);
+        res.status(500).json({ message: 'Error saving data' });
     }
 });
 
